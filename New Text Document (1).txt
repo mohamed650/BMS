@@ -1,0 +1,53 @@
+create SEQUENCE account_number_seq START WITH 1111004080;
+
+  create table m_customerdetails (
+  customer_id int not null
+  , account_id int
+  , first_name varchar(40)
+  , last_name varchar(40)
+  , date_of_birth date
+  , gender char(1)
+  , email varchar(50)
+  , contact_number varchar(15)
+  , address text
+  , adhar_number varchar(20)
+  , password varchar(50)
+  , occupation_id int
+  , annual_income money
+  , opening_amount money
+  , created_date date
+  , updated_date date
+  , created_by varchar(40)
+  , updated_by varchar(40)
+  , block_flag char default 0
+  , account_number int default nextval('account_number_seq'::regclass)
+  , active_flag char default 1
+  , last_login_date timestamp(6) without time zone
+  , otp int
+  , otp_time timestamp(6) without time zone
+  , old_password varchar(50)
+  , deactivated_date date
+  , primary key (customer_id,account_number)
+);
+create table m_account_type (
+  account_id int not null
+  , account_type varchar(30)
+  , primary key (account_id)
+);
+create table m_occupation (
+  occupation_id int not null
+  ,occupation_name varchar(30)
+  ,primary key (occupation_id)
+);
+
+create SEQUENCE t_transaction_history_transaction_id_seq START WITH 100001;
+create table t_transaction_history (
+  transaction_id varchar default ('T':varchar || nextval('t_transaction_history_transaction_id_seq'::regclass))
+  , transaction_date date
+  , description varchar
+  , cr_dr varchar
+  , initial_balance money
+  , transaction_amount money
+  , available_balance money
+  , account_number int
+);
