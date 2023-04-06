@@ -98,7 +98,8 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			json = json.replaceAll("\\s", "");
+			System.out.println(json);
+			//json = json.replaceAll("\\s", "");
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -119,7 +120,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			json = json.replaceAll("\\s", "");
+			//json = json.replaceAll("\\s", "");
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -140,7 +141,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			json = json.replaceAll("\\s", "");
+			//json = json.replaceAll("\\s", "");
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();

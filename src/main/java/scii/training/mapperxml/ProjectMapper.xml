@@ -40,8 +40,6 @@
 			STATE_CODE
 		from
 			CITIES
-		order by
-			CITY_NAME
 	</select>
 	
 	<select id="getFilteredCitiesList" parameterType="scii.training.model.CityModel" resultMap="cityInfo">
@@ -53,8 +51,6 @@
 			CITIES
 		where
 			STATE_CODE = #{state_code}
-		order by
-			CITY_NAME
 	</select>
 
 </mapper>
