@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="scii.training.mapper.IMapper">
+	<resultMap type="SBIAccountTypeModel" id="accountTypeInfo">
+		<result property="account_TypeId" column="account_TypeId"/>
+		<result property="account_Type" column="account_Type" />
+	</resultMap>
+	<resultMap type="StateModel" id="stateInfo">
+		<result property="state_code" column="state_code"/>
+		<result property="state_name" column="state_name"/>
+		<result property="country_code" column="country_code"/>
+	</resultMap>
+	<resultMap type="CityModel" id="cityInfo">
+		<result property="city_name" column="city_name"/>
+		<result property="city_code" column="city_code"/>
+		<result property="state_code" column="state_code"/>
+	</resultMap>
+	
+	<select id="getAccountTypes" parameterType="scii.training.model.SBIAccountTypeModel" resultMap="accountTypeInfo">
+		select
+			ACCOUNT_TYPEID,
+			ACCOUNT_TYPE
+		from
+			SBI_ACCOUNT_TYPES
+	</select>
+	
+	<select id="getStatesList" parameterType="scii.training.model.StateModel" resultMap="stateInfo">
+		select
+			STATE_CODE,
+			STATE_NAME
+		from
+			STATES
+	</select>
+	
+	<select id="getCitiesList" parameterType="scii.training.model.CityModel" resultMap="cityInfo">
+		select
+			CITY_NAME,
+			CITY_CODE,
+			STATE_CODE
+		from
+			CITIES
+		order by
+			CITY_NAME
+	</select>
+	
+	<select id="getFilteredCitiesList" parameterType="scii.training.model.CityModel" resultMap="cityInfo">
+		select
+			CITY_NAME,
+			CITY_CODE,
+			STATE_CODE
+		from
+			CITIES
+		where
+			STATE_CODE = #{state_code}
+		order by
+			CITY_NAME
+	</select>
+
+</mapper>

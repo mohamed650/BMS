@@ -1,0 +1,167 @@
+@charset "ISO-8859-1";
+
+body{
+	overflow: auto;
+	background-color: #eee;
+	font-family: 'Poppins', sans-serif;
+}
+
+.bank-logo{
+	margin-top: 10px;
+	text-align: center;
+}
+.sbi-img{
+	width: 120px;
+	height: 120px;
+}
+.container-fluid{
+	border: 0px solid;
+	border-radius: 10px;
+	background-color: #fff;
+	width: 70%;
+	margin-top: 45px;
+	padding-bottom: 2px;
+	margin-bottom: 10px;
+}
+.registerScreen{
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-top: 15px;
+}
+.registerTitle{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.registerTitle h2{
+	font-weight: bold;
+	opacity: 0.8;
+}
+.accountinfodiv{
+	margin-top: 8px;
+}
+hr{
+	margin-top: 15px;
+}
+.info{
+	font-size: 1.2em;
+	color: #1166dd;
+}
+.sub-info{
+	font-weight: bold;
+	opacity: 0.9;
+}
+.detail-info{
+	opacity: 0.9;
+}
+select{
+	outline: none;
+}
+input{
+	outline: none;
+}
+input:focus::placeholder{
+	color: transparent;
+}
+input::placeholder{
+	opacity: 0.8;
+}
+input [type="text"],[type="date"]{
+	width: 200px;
+}
+.personalinfodiv{
+	margin-top: 8px;
+}
+.namediv{
+	margin-bottom: 20px;
+}
+.titlediv{
+	display: inline-flex;
+}
+#customer_FirstName{
+	margin-left: 25px;
+}
+#joint_customer_FirstName{
+	margin-left: 25px;
+}
+.phonediv{
+	display: inline-flex;
+	margin-bottom: 20px;
+}
+#customer_Phone{
+	margin-left: 20px;
+}
+#joint_customer_Phone{
+	margin-left: 20px;
+}
+.phonediv span{
+	padding-left: 10px;
+}
+.jointownerdiv{
+	margin-top: 8px;
+}
+
+.signaturediv{
+	display: flex;
+}
+.signaturebox{
+	border: 1px solid #333;
+	border-right: 0;
+}
+canvas#signature-pad{
+	background: #fff;
+	height: 200px;
+	width: 400px;
+	cursor: crosshair;
+}
+input#clear{
+	height: 100%;
+	background: #eee;
+	border: 1px solid black;
+	color: #333;
+	font-weight: 600;
+	cursor: pointer;
+}
+/* #jointOwnerSignaturePad{
+	display: flex;
+} */
+canvas#joint_signature-pad{
+	background: #fff;
+	height: 200px;
+	width: 400px;
+	cursor: crosshair;
+}
+input#joint_clear{
+	height: 100%;
+	background: #eee;
+	border: 1px solid black;
+	color: #333;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.submitdiv{
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 15px;
+}
+.submitbtn{
+	width: 130px;
+	height: 40px;
+	border: solid transparent;
+	border-radius: 5px;
+	color: #fff;
+	background-image: linear-gradient(to right, #6ca1e9, #1166dd, #6ca1e9);
+	background-size: 200%;
+	cursor: pointer;
+	transition: .5s;
+	text-transform: uppercase;
+}
+.submitbtn:hover{
+	background-position: right;
+}
+
+@media screen and (max-width: 700px){
+	.container-fluid{
+		width: 450px;
+	}
+}
