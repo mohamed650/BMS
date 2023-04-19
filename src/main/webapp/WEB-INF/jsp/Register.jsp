@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/css/CustomCSS/Register.css" />
 <script src="/js/BuiltInJS/fontAwesome.js"></script>
 <script src="/js/BuiltInJS/jquery.js"></script>
+<script src="/js/BuiltInJS/Jquery1.16.0.js"></script>
 <script src="/js/BuiltInJS/signature_pad.min.js"></script>
 <title><spring:message code="bms.label.register.pageTitle"/></title>
 </head>
@@ -49,12 +50,12 @@
 						<input type="text" placeholder="Last Name" id="customer_LastName" onkeypress="return onlyAlphabets(event)"/>
 					</div>
 					<p class="sub-info"><spring:message code="bms.label.register.gender"/></p>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderMale"/></span><br>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderFemale"/></span><br>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderNottosay"/></span>
+					<input type="radio" name="gender" value=<spring:message code="bms.label.register.genderMale"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderMale"/></span><br>
+					<input type="radio" name="gender" value=<spring:message code="bms.label.register.genderFemale"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderFemale"/></span><br>
+					<input type="radio" name="gender" value=<spring:message code="bms.label.register.genderNottosay"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderNottosay"/></span>
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.phoneNumber" /></p>
 					<div class="phonediv">
-						<input type="text" value="+91" style="width: 50px;" disabled/><span>-</span>
+						<input type="text" id="countryCode" value="+91" style="width: 50px;" disabled/><span>-</span>
 						<input type="text" placeholder="Phone Number" id="customer_Phone" onkeypress="return onlyNumbers(event)"/>
 					</div>
 					<p class="sub-info"><spring:message code="bms.label.register.email"/></p>
@@ -73,10 +74,6 @@
 					<input type="text" placeholder="Aadhar Number" id="customer_Aadhar" style="margin-bottom: 15px;" onkeypress="return onlyNumbers(event)"/>
 					<p class="sub-info"><spring:message code="bms.label.register.occupation"/></p>
 					<select id="selectOccupation" style="margin-bottom: 15px;">
-						<option value="-1">Select Occupation</option>
-						<option value="1">Engineer</option>
-						<option value="2">Doctor</option>
-						<option value="3">Lawyer</option>
 					</select>
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.password"/></p>
 					<input type="password" placeholder="Password" id="customer_Password" style="width: 200px; margin-bottom: 15px;"/>
@@ -84,19 +81,19 @@
 					<input type="password" placeholder="Confirm Password" id="customer_ConfirmPassword" style="width: 200px; margin-bottom: 15px;"/>
 				</div>
 				<hr>
-				<div class="jointownerdiv">
+				<div class="jointownerdiv" id="jointOwnerDivision" style="display: block;">
 					<p class="sub-info"><spring:message code="bms.label.register.jointOwnerInfo"/></p>
 					<input type="radio" name="jointAccount" id="radioYes" onclick="checkRadio()"/><span style="margin-left: 15px;"><spring:message code="bms.label.register.radioYes"/></span><br>
 					<input type="radio" name="jointAccount" onclick="checkRadio()"/><span style="margin-left: 15px;"><spring:message code="bms.label.register.radioNo"/></span>
 				</div>
-				<hr>
+				<hr id="jointOwnerdivHr" style="display: block;">
 				<div class="personalinfodiv" id="jointOwnerdiv" style="display: none;">
 					<p class="info"><spring:message code="bms.label.register.jointInfo"/></p>
 					<p class="sub-info"><spring:message code="bms.label.register.name"/></p>
 					<div class="namediv">
 						<div class="titlediv">
 							<select id="selectJointTitle">
-								<option value="-1">Select Title</option>
+								<option value="-1">--Select Title--</option>
 								<option value="1">Mr.</option>
 								<option value="2">Ms.</option>
 								<option value="3">Mrs.</option>
@@ -106,12 +103,12 @@
 						<input type="text" placeholder="Last Name" id="joint_customer_LastName" onkeypress="return onlyAlphabets(event)"/>
 					</div>
 					<p class="sub-info"><spring:message code="bms.label.register.gender"/></p>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderMale"/></span><br>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderFemale"/></span><br>
-					<input type="radio" name="gender" /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderNottosay"/></span>
+					<input type="radio" name="joint_gender" value=<spring:message code="bms.label.register.genderMale"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderMale"/></span><br>
+					<input type="radio" name="joint_gender" value=<spring:message code="bms.label.register.genderFemale"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderFemale"/></span><br>
+					<input type="radio" name="joint_gender" value=<spring:message code="bms.label.register.genderNottosay"/> /><span style="margin-left: 15px;"><spring:message code="bms.label.register.genderNottosay"/></span>
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.phoneNumber"/></p>
 					<div class="phonediv">
-						<input type="text" value="+91" style="width: 50px;" disabled/><span>-</span>
+						<input type="text" id="jointCountryCode" value="+91" style="width: 50px;" disabled/><span>-</span>
 						<input type="text" placeholder="Phone Number" id="joint_customer_Phone" onkeypress="return onlyNumbers(event)"/>
 					</div>
 					<p class="sub-info"><spring:message code="bms.label.register.email"/></p>
@@ -130,10 +127,6 @@
 					<input type="text" placeholder="Aadhar Number" id="joint_customer_Aadhar" style="margin-bottom: 15px;" onkeypress="return onlyNumbers(event)"/>
 					<p class="sub-info"><spring:message code="bms.label.register.occupation"/></p>
 					<select id="selectJointOccupation" style="margin-bottom: 15px;">
-						<option value="-1">Select Occupation</option>
-						<option value="1">Engineer</option>
-						<option value="2">Doctor</option>
-						<option value="3">Lawyer</option>
 					</select>
 				</div>
 				<hr id="jointOwnerHR" style="display: none;">
@@ -161,7 +154,7 @@
 					
 				</div> -->
 				<div class="submitdiv">
-					<input type="button" value=<spring:message code="bms.button.register"/> class="submitbtn" />
+					<input type="button" value=<spring:message code="bms.button.register"/> class="submitbtn" onclick="registerCustomer()"/>
 				</div>
 			</form>
 		</div>

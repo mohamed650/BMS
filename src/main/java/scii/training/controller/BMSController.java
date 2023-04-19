@@ -1,10 +1,14 @@
 package scii.training.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import scii.training.model.CityModel;
+import scii.training.model.OccupationModel;
+import scii.training.model.RegisterModel;
 import scii.training.model.SBIAccountTypeModel;
 import scii.training.model.StateModel;
 import scii.training.service.IService;
+import scii.training.util.GenerateCaptcha;
 
 @RestController
 public class BMSController {
@@ -43,6 +50,47 @@ public class BMSController {
 		return modelAndView;
 	}
 	
+	@PostMapping("/customerLogin")
+	public @ResponseBody void customerLogin(@ModelAttribute ("loginUser") RegisterModel loginUser, HttpServletResponse response, HttpSession httpSession) {
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			List<RegisterModel> checkLoginUser = iservice.userLogin(loginUser);
+			if(checkLoginUser.size() > 0) {
+				System.out.println(checkLoginUser.get(0).getLast_login_dateTime().trim());
+				httpSession.setAttribute("LASTLOGIN", checkLoginUser.get(0).getLast_login_dateTime().trim());
+				httpSession.setAttribute("AccNumber", checkLoginUser.get(0).getAccount_Number().trim());
+				String customer_Name = checkLoginUser.get(0).getCustomer_FirstName().trim().concat(" ").concat(checkLoginUser.get(0).getCustomer_LastName().trim());
+				httpSession.setAttribute("CustomerName", customer_Name);
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Date currentDate = new Date();
+				loginUser.setLast_login_dateTime(dateFormat.format(currentDate));
+				int updateStatus = iservice.updateLastLogin(loginUser);
+				if(updateStatus == 1) {
+					map.put("MESSAGE", "UPDATE SUCCESS");
+				}else {
+					map.put("MESSAGE", "UPDATE FAILURE");
+				}
+				map.put("MESSAGE", "SUCCESS");
+			}else {
+				map.put("MESSAGE", "INVALID USER");
+			}
+			String json = gson.toJson(map);
+			response.getWriter().print(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@GetMapping("/accounts")
+	public ModelAndView accountsScreen(HttpSession httpSession) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Accounts");
+		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
+		modelAndView.addObject(httpSession.getAttribute("LASTLOGIN"));
+		modelAndView.addObject(httpSession.getAttribute("AccNumber"));
+		return modelAndView;
+	}
+	
 	@PostMapping("/getSbiAccountTypes")
 	public @ResponseBody void getAccountTypes(HttpServletResponse response) {
 		try {
@@ -57,6 +105,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
+			json = json.trim();
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -77,6 +126,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
+			json = json.trim();
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -89,7 +139,6 @@ public class BMSController {
 			Map<String, String> map = new HashMap<String, String>();
 			CityModel city = new CityModel();
 			List<CityModel> getCityList = iservice.getCitiesList(city);
-			System.out.println(getCityList.size());
 			if(getCityList.size() > 0) {
 				for(int i=0; i<getCityList.size(); i++) {
 					map.put(getCityList.get(i).getCity_code(), getCityList.get(i).getCity_name());
@@ -98,8 +147,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			System.out.println(json);
-			//json = json.replaceAll("\\s", "");
+			json = json.trim();
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -120,7 +168,7 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			//json = json.replaceAll("\\s", "");
+			json = json.trim();
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -141,7 +189,74 @@ public class BMSController {
 				map.put("ERRORMSG", "MSG10");
 			}
 			String json = gson.toJson(map);
-			//json = json.replaceAll("\\s", "");
+			json = json.trim();
+			response.getWriter().print(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping("/getOccupations")
+	public @ResponseBody void getOccupations(HttpServletResponse response) {
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			OccupationModel occupation = new OccupationModel();
+			List<OccupationModel> getOccupationsList = iservice.getOccupationsList(occupation);
+			if(getOccupationsList.size() > 0) {
+				for(int i=0; i < getOccupationsList.size(); i++) {
+					map.put(getOccupationsList.get(i).getCustomer_OccupationId(), getOccupationsList.get(i).getCustomer_Occupation());
+				}
+			}else {
+				map.put("ERRORMSG", "MSG10");
+			}
+			String json = gson.toJson(map);
+			json = json.trim();
+			response.getWriter().print(json);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping("/generateCaptcha")
+	public @ResponseBody void generateCaptcha(HttpServletResponse response) {
+		try {
+			int length = 6;
+			GenerateCaptcha captcha = new GenerateCaptcha();
+			String generatedCaptcha = captcha.generateCaptcha(length);
+			System.out.println("Captcha is: "+generatedCaptcha);
+			response.getWriter().print(generatedCaptcha);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping("/registerCustomer")
+	public @ResponseBody void registerCustomer(@ModelAttribute ("registerCustomer") RegisterModel registerCustomer, HttpServletResponse response) {
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			List<RegisterModel> checkExistingCustomer = iservice.checkRegisteredCustomer(registerCustomer);
+			if(checkExistingCustomer.size() > 0) {
+				map.put("MESSAGE", "CUSTOMER EXIST");
+			}else {
+				int status = iservice.insertCustomerDetails(registerCustomer);
+				List<RegisterModel> fetchCustomerList = iservice.checkRegisteredCustomer(registerCustomer);
+				String email = fetchCustomerList.get(0).getCustomer_Email();
+				String customerId = fetchCustomerList.get(0).getCustomer_Id();
+				String accountNumber = fetchCustomerList.get(0).getAccount_Number();
+				String password = fetchCustomerList.get(0).getCustomer_Password();
+				email = email.trim();
+				customerId = customerId.trim();
+				accountNumber = accountNumber.trim();
+				password = password.trim();
+				String mailStatus = iservice.sendCustomerDetails(email, customerId, accountNumber, password);
+				System.out.println(mailStatus);
+				if(status == 1 && mailStatus=="SUCCESS") {
+					map.put("MESSAGE", "SUCCESS");
+				}else {
+					map.put("MESSAGE", "FAILURE");
+				}
+			}
+			String json = gson.toJson(map);
 			response.getWriter().print(json);
 		}catch(Exception e) {
 			e.printStackTrace();

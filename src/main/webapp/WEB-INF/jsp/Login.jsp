@@ -20,7 +20,7 @@
 		</div>
 		<div class="logincontentdiv" id="loginScreen">
 			<form action="">
-				<h2 class="title"><spring:message code="bms.label.login.welcome"/></h2>
+				<p class="title" align="center"><spring:message code="bms.label.login.welcome"/></p>
 				<!-- <div class="select-div">
            		    <select class="input" id="selectRole">
            		    	<option value="-1" disabled>-- Select Your Role --</option>
@@ -45,6 +45,23 @@
            		    	<h5><spring:message code="bms.label.login.Password"/></h5>
            		    	<input type="password" class="input" id="login_customer_Password">
             	   </div>
+            	</div>
+            	<div class="input-div captcha">
+            		<div class="i">
+            			<i class="fas fa-key"></i>
+            		</div>
+            		<div class="div">
+            			<h5><spring:message code="bms.label.login.captcha"/></h5>
+            			<input type="text" class="input" id="login_customer_captcha" />
+            		</div>
+            	</div>
+            	<div class="captcha-warning">
+            		<p><sup>*</sup><spring:message code="bms.label.login.captchaWarning"/></p>
+            	</div>
+            	<div class="verification-div">
+            		<div class="captcha-div" id="fetchCaptcha" style="background-image: url('/images/captcha-backimg.jpg');">
+	            	</div>
+	            	<span onclick="generateCaptcha()"><i class="fa fa-refresh fa-lg"></i></span>
             	</div>
             	<!-- <div class="input-div otp" id="otpfield">
            		   <div class="i"> 

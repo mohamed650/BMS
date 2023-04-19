@@ -16,6 +16,53 @@
 		<result property="city_code" column="city_code"/>
 		<result property="state_code" column="state_code"/>
 	</resultMap>
+	<resultMap type="OccupationModel" id="occupationInfo">
+		<result property="customer_OccupationId" column="customer_OccupationId"/>
+		<result property="customer_Occupation" column="customer_Occupation"/>
+	</resultMap>
+	<resultMap type="RegisterModel" id="registerInfo">
+		<result property="customer_Id" column="customer_Id"/>
+		<result property="account_Number" column="account_Number"/>
+		<result property="customer_AccountTypeId" column="customer_AccountTypeId"/>
+		<result property="customer_AccountType" column="customer_AccountType"/>
+		<result property="customer_FirstName" column="customer_FirstName"/>
+		<result property="customer_LastName" column="customer_LastName"/>
+		<result property="customer_Gender" column="customer_Gender"/>
+		<result property="customer_Phone" column="customer_Phone"/>
+		<result property="customer_Email" column="customer_Email"/>
+		<result property="customer_DOB" column="customer_DOB"/>
+		<result property="customer_Address" column="customer_Address"/>
+		<result property="customer_ZipCode" column="customer_Zipcode"/>
+		<result property="state_code" column="state_code"/>
+		<result property="state_name" column="state_name"/>
+		<result property="city_code" column="city_code"/>
+		<result property="city_name" column="city_name"/>
+		<result property="customer_Aadhar" column="customer_Aadhar"/>
+		<result property="customer_OccupationId" column="customer_OccupationId"/>
+		<result property="customer_Occupation" column="customer_Occupation"/>
+		<result property="customer_Password" column="customer_Password"/>
+		<result property="joint_customer_FirstName" column="joint_customer_FirstName"/>
+		<result property="joint_customer_LastName" column="joint_customer_LastName"/>
+		<result property="joint_customer_Gender" column="joint_customer_Gender"/>
+		<result property="joint_customer_Phone" column="joint_customer_Phone"/>
+		<result property="joint_customer_Email" column="joint_customer_Email"/>
+		<result property="joint_customer_DOB" column="joint_customer_DOB"/>
+		<result property="joint_customer_Address" column="joint_customer_Address"/>
+		<result property="joint_customer_ZipCode" column="joint_customer_ZipCode"/>
+		<result property="joint_state_code" column="joint_state_code"/>
+		<result property="joint_state_name" column="joint_state_name"/>
+		<result property="joint_city_code" column="joint_city_code"/>
+		<result property="joint_city_name" column="joint_city_name"/>
+		<result property="joint_customer_Aadhar" column="joint_customer_Aadhar"/>
+		<result property="joint_customer_OccupationId" column="joint_customer_OccupationId"/>
+		<result property="joint_customer_Occupation" column="joint_customer_Occupation"/>
+		<result property="created_date" column="created_date"/>
+		<result property="updated_date" column="updated_date"/>
+		<result property="last_login_dateTime" column="last_login_dateTime"/>
+		<result property="block_flg" column="block_flg"/>
+		<result property="active_flg" column="active_flg"/>
+		<result property="deactivated_Date" column="deactivated_Date"/>
+	</resultMap>
 	
 	<select id="getAccountTypes" parameterType="scii.training.model.SBIAccountTypeModel" resultMap="accountTypeInfo">
 		select
@@ -52,5 +99,126 @@
 		where
 			STATE_CODE = #{state_code}
 	</select>
+	
+	<select id="getOccupationsList" parameterType="scii.training.model.OccupationModel" resultMap="occupationInfo">
+		select
+			CUSTOMER_OCCUPATIONID,
+			CUSTOMER_OCCUPATION
+		from
+			CUSTOMER_OCCUPATION
+	</select>
+	
+	<select id="checkRegisteredCustomer" parameterType="scii.training.model.RegisterModel" resultMap="registerInfo">
+		select
+			CUSTOMER_ID,
+			ACCOUNT_NUMBER,
+			CUSTOMER_ACCOUNTTYPEID,
+			CUSTOMER_FIRSTNAME,
+			CUSTOMER_LASTNAME,
+			CUSTOMER_PHONE,
+			CUSTOMER_EMAIL,
+			CUSTOMER_PASSWORD
+		from
+			SBIUSERS
+		where
+			CUSTOMER_ACCOUNTTYPEID = #{customer_AccountTypeId} and
+			CUSTOMER_PHONE = #{customer_Phone} and
+			CUSTOMER_EMAIL = #{customer_Email}
+	</select>
+	
+	<select id="userLogin" parameterType="scii.training.model.RegisterModel" resultMap="registerInfo">
+		select
+			*
+		from
+			SBIUSERS
+		where
+			CUSTOMER_ID = #{customer_Id} and
+			CUSTOMER_PASSWORD = #{customer_Password}
+	</select>
+	
+	<insert id="insertCustomerDetails" parameterType="scii.training.model.RegisterModel">
+		insert into
+			SBIUSERS(
+				CUSTOMER_ACCOUNTTYPEID,
+				CUSTOMER_ACCOUNTTYPE,
+				CUSTOMER_FIRSTNAME,
+				CUSTOMER_LASTNAME,
+				CUSTOMER_GENDER,
+				CUSTOMER_PHONE,
+				CUSTOMER_EMAIL,
+				CUSTOMER_DOB,
+				CUSTOMER_ADDRESS,
+				CUSTOMER_ZIPCODE,
+				STATE_CODE,
+				STATE_NAME,
+				CITY_CODE,
+				CITY_NAME,
+				CUSTOMER_AADHAR,
+				CUSTOMER_OCCUPATIONID,
+				CUSTOMER_OCCUPATION,
+				CUSTOMER_PASSWORD,
+				JOINT_CUSTOMER_FIRSTNAME,
+				JOINT_CUSTOMER_LASTNAME,
+				JOINT_CUSTOMER_GENDER,
+				JOINT_CUSTOMER_PHONE,
+				JOINT_CUSTOMER_EMAIL,
+				JOINT_CUSTOMER_DOB,
+				JOINT_CUSTOMER_ADDRESS,
+				JOINT_CUSTOMER_ZIPCODE,
+				JOINT_STATE_CODE,
+				JOINT_STATE_NAME,
+				JOINT_CITY_CODE,
+				JOINT_CITY_NAME,
+				JOINT_CUSTOMER_AADHAR,
+				JOINT_CUSTOMER_OCCUPATIONID,
+				JOINT_CUSTOMER_OCCUPATION,
+				CREATED_DATE
+			)
+		values(
+			#{customer_AccountTypeId},
+			#{customer_AccountType},
+			#{customer_FirstName},
+			#{customer_LastName},
+			#{customer_Gender},
+			#{customer_Phone},
+			#{customer_Email},
+			TO_DATE(#{customer_DOB}, 'YYYY/MM/DD'),
+			#{customer_Address},
+			#{customer_ZipCode},
+			#{state_code},
+			#{state_name},
+			#{city_code},
+			#{city_name},
+			#{customer_Aadhar},
+			#{customer_OccupationId},
+			#{customer_Occupation},
+			#{customer_Password},
+			#{joint_customer_FirstName},
+			#{joint_customer_LastName},
+			#{joint_customer_Gender},
+			#{joint_customer_Phone},
+			#{joint_customer_Email},
+			TO_DATE(#{joint_customer_DOB}, 'YYYY/MM/DD'),
+			#{joint_customer_Address},
+			#{joint_customer_ZipCode},
+			#{joint_state_code},
+			#{joint_state_name},
+			#{joint_city_code},
+			#{joint_city_name},
+			#{joint_customer_Aadhar},
+			#{joint_customer_OccupationId},
+			#{joint_customer_Occupation},
+			now()
+		)
+	</insert>
+	
+	<update id="updateLastLogin" parameterType="scii.training.model.RegisterModel">
+		update
+			SBIUSERS
+		set
+			LAST_LOGIN_DATETIME = TO_TIMESTAMP(#{last_login_dateTime}, 'YYYY/MM/DD HH24:MI:SS')
+		where
+			CUSTOMER_ID = #{customer_Id}
+	</update>
 
 </mapper>

@@ -5,6 +5,10 @@ create sequence customerIDSequence
 create sequence accountNumber
 	start 41238304200
 	increment 1
+	
+create sequence transcaction_Id
+	start 110000
+	increment 1
 
 create table SBI_ACCOUNT_TYPES
 (
@@ -18,6 +22,7 @@ insert into SBI_ACCOUNT_TYPES values(3, 'Salary Account');
 insert into SBI_ACCOUNT_TYPES values(4, 'NRI Account');
 insert into SBI_ACCOUNT_TYPES values(5, 'Recurring Deposit Account');
 insert into SBI_ACCOUNT_TYPES values(6, 'Fixed Deposit Account');
+insert into SBI_ACCOUNT_TYPES values(7, 'Joint Account');
 
 create table STATES
 (
@@ -1093,14 +1098,14 @@ VALUES('Bankura', '3501','35'),
 
 create table SBIUSERS
 (
-customer_Id integer NOT NULL DEFAULT nextval('customerIDSequence') primary key,
+customer_Id character(255) NOT NULL DEFAULT nextval('customerIDSequence') primary key,
 account_Number character(255) not null DEFAULT('SBI' || nextval('accountNumber')),
-customer_AccountTypeID character(25) not null,
+customer_AccountTypeId character(25) not null,
 customer_AccountType character(45) not null,
 customer_FirstName character(255) not null,
 customer_LastName character(255),
 customer_Gender character(15) not null,
-customer_Phone character(12) not null,
+customer_Phone character(13) not null,
 customer_Email character(255) not null,
 customer_DOB Date not null,
 customer_Address character(255) not null,
@@ -1113,19 +1118,58 @@ customer_Aadhar character(12) not null,
 customer_OccupationId character(10) not null,
 customer_Occupation character(255) not null,
 customer_Password character(255) not null,
-joint_customer_FirstName character(255) not null,
-joint_customer_LastName character(255) not null,
-joint_customer_Gender character(15) not null,
-joint_customer_Phone character(12) not null,
-joint_customer_Email character(255) not null,
-joint_customer_DOB Date not null,
-joint_customer_Address character(255) not null,
-joint_customer_ZipCode character(10) not null,
-joint_state_code integer not null,
-joint_state_name character(255) not null,
-joint_city_code character(25) not null,
-joint_city_name character(255) not null,
-joint_customer_Aadhar character(12) not null,
-joint_customer_OccupationId character(10) not null,
-joint_customer_Occupation character(255) not null
+joint_customer_FirstName character(255),
+joint_customer_LastName character(255),
+joint_customer_Gender character(15),
+joint_customer_Phone character(13),
+joint_customer_Email character(255),
+joint_customer_DOB Date,
+joint_customer_Address character(255),
+joint_customer_ZipCode character(10),
+joint_state_code integer,
+joint_state_name character(255),
+joint_city_code character(25),
+joint_city_name character(255),
+joint_customer_Aadhar character(12),
+joint_customer_OccupationId character(10),
+joint_customer_Occupation character(255),
+created_date Date,
+updated_date Date,
+last_login_dateTime Timestamp without time zone,
+block_flg char default 0,
+active_flg char default 1,
+deactivated_Date Date
 );
+drop table SBIUSERS;
+
+create table customer_Occupation
+(
+customer_OccupationId character(10) not null primary key,
+customer_Occupation character(255) not null
+);
+
+insert into customer_Occupation (customer_OccupationID, customer_Occupation)
+values ('1', 'Doctor'),
+('2', 'Engineer'),
+('3', 'Lawyer'),
+('4', 'Farmer'),
+('5', 'Teacher'),
+('6', 'BusinessMan'),
+('7', 'Police');
+
+insert into customer_Occupation (customer_OccupationID, customer_Occupation)
+values ('8', 'Student');
+
+insert into customer_Occupation (customer_OccupationID, customer_Occupation)
+values ('9', 'Others');
+
+create table TRANSACTIONS
+(
+transaction_Id character(255) not null DEFAULT('T' || nextval('transaction_Id')) primary key,
+account_Number character(255) not null primary key,
+transaction_Date Timestamp without time zone not null,
+description character(255),
+cr_dr character(25) not null,
+openining_Balance integer default 0,
+closing_Balance integer not null
+)

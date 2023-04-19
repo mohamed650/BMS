@@ -18,7 +18,7 @@ body{
 	margin-left: 10%;
 }
 .logincontentdiv{
-	margin-top: 15%;
+	margin-top: 8%;
 	margin-left: 20%;
 	margin-right: 20%;
 }
@@ -26,11 +26,12 @@ body{
 form{
 	width: 360px;
 }
-.logincontentdiv h2{
-	margin-left: 75px;
-	color: #333;
+.logincontentdiv .title{
+	color: #4386E4;
 	text-transform: uppercase;
-	font-size: 2.2rem;
+	font-size: 2.5rem;
+	font-style: italic;
+	font-weight: 600;
 }
 
 /* .select-div .input{
@@ -144,7 +145,7 @@ form{
 	color: #fff;
 	font-family: 'Poppins', sans-serif;
 	text-transform: uppercase;
-	margin: 1rem 0;
+	margin: 2rem 0 1rem 0;
 	cursor: pointer;
 	transition: .5s;
 }
@@ -164,41 +165,95 @@ form{
 .registerlink .changeContent{
 	color: #1166dd;;
 }
+.captcha-warning{
+	margin-top: -14px;
+}
+.captcha-warning sup{
+	color: red;
+	margin-right: 5px;
+}
+.captcha-warning p{
+	font-size: 13px;
+	opacity: 0.8;
+}
+.verification-div{
+	display: inline-flex;
+}
+.verification-div span{
+	margin-top: 15px;
+	margin-left: 15px;
+	cursor: pointer;
+}
+.verification-div span i{
+	opacity: 0.8;
+}
+
+.captcha-div{
+	border: 0px solid #d9d9d9;
+	height: 35px;
+	width: 185px;
+	color: black;
+	text-align: center;
+	padding-top: 5px;
+	margin-top: 8px;
+	font-weight: bold;
+	letter-spacing: 10pt;
+	font-size: 18px;
+}
 
 
-@media screen and (max-width: 1050px){
-	.logindiv{
-		grid-gap: 5rem;
+@media screen and (min-width: 1001px) and (max-width: 1140px){
+	form{
+		width: 390px;
+	}
+	.imagediv{
+		margin-top: 10%;
+		margin-left: 6%;
+	}
+	.imagediv img{
+		width: 430px;
 	}
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (min-width: 900px) and (max-width: 1000px) {
 	form{
 		width: 290px;
 	}
-
-	.logincontentdiv h2{
-		margin-left: 75px;
-		color: #333;
-		text-transform: uppercase;
-		font-size: 2.2rem;
+	.imagediv{
+		margin-top: 15%;
+		margin-left: 6%;
 	}
-
 	.imagediv img{
 		width: 350px;
 	}
 }
 
-@media screen and (max-width: 900px){
-	.logindiv{
-		grid-template-columns: 1fr;
+@media screen and (min-width: 750px) and (max-width: 899px){
+	form{
+		width: 290px;
 	}
+	.imagediv{
+		margin-top: 19%;
+		margin-left: 6%;
+	}
+	.imagediv img{
+		width: 290px;
+	}
+}
+
+@media screen and (max-width: 749px){
 
 	.imagediv{
 		display: none;
 	}
 
-	.logincontentdiv{
-		justify-content: center;
+	.logindiv{
+		text-align: center;
+	}
+	.captcha-warning{
+		margin-left: -55px;
+	}
+	.verification-div{
+		margin-left: -130px;
 	}
 }
