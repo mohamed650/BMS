@@ -63,6 +63,17 @@
 		<result property="active_flg" column="active_flg"/>
 		<result property="deactivated_Date" column="deactivated_Date"/>
 	</resultMap>
+	<resultMap type="TransactionsModel" id="transactionInfo">
+		<result property="transaction_Id" column="transaction_Id"/>
+		<result property="from_account_Number" column="from_account_Number"/>
+		<result property="to_account_Number" column="to_account_Number"/>
+		<result property="amount" column="amount"/>
+		<result property="transaction_Date" column="transaction_Date"/>
+		<result property="description" column="description"/>
+		<result property="cr_dr" column="cr_dr"/>
+		<result property="account_Number" column="account_Number"/>
+		<result property="balance" column="balance"/>
+	</resultMap>
 	
 	<select id="getAccountTypes" parameterType="scii.training.model.SBIAccountTypeModel" resultMap="accountTypeInfo">
 		select
@@ -134,6 +145,24 @@
 		where
 			CUSTOMER_ID = #{customer_Id} and
 			CUSTOMER_PASSWORD = #{customer_Password}
+	</select>
+	
+	<select id="fetchBalance" parameterType="scii.training.model.TransactionsModel" resultMap="transactionInfo">
+		select
+			*
+		from
+			AVAILABLE_BALANCE
+		where
+			ACCOUNT_NUMBER = #{account_Number}
+	</select>
+
+	<select id="getBeneficiaryDetails" parameterType="scii.training.model.RegisterModel" resultMap="registerInfo">
+		select
+			*
+		from
+			SBIUSERS
+		where
+			ACCOUNT_NUMBER = #{account_Number}
 	</select>
 	
 	<insert id="insertCustomerDetails" parameterType="scii.training.model.RegisterModel">
@@ -212,6 +241,38 @@
 		)
 	</insert>
 	
+	<insert id="insertBalance" parameterType="scii.training.model.TransactionsModel">
+		insert into
+			AVAILABLE_BALANCE(
+				ACCOUNT_NUMBER,
+				BALANCE
+			)
+		values(
+			#{account_Number},
+			#{balance}
+		)
+	</insert>
+
+	<insert id="transferAmount" parameterType="scii.training.model.TransactionsModel">
+		insert into
+			TRANSACTIONS(
+				FROM_ACCOUNT_NUMBER,
+				TO_ACCOUNT_NUMBER,
+				AMOUNT,
+				TRANSACTION_DATE,
+				DESCRIPTION,
+				CR_DR
+			)
+		values(
+			#{from_account_Number},
+			#{to_account_Number},
+			#{amount},
+			TO_TIMESTAMP(#{transaction_Date}, 'YYYY/MM/DD HH24:MI:SS'),
+			#{description},
+			#{cr_dr}
+		)
+	</insert>
+	
 	<update id="updateLastLogin" parameterType="scii.training.model.RegisterModel">
 		update
 			SBIUSERS
@@ -219,6 +280,15 @@
 			LAST_LOGIN_DATETIME = TO_TIMESTAMP(#{last_login_dateTime}, 'YYYY/MM/DD HH24:MI:SS')
 		where
 			CUSTOMER_ID = #{customer_Id}
+	</update>
+
+	<update id="updateBalance" parameterType="scii.training.model.TransactionsModel">
+		update
+			AVAILABLE_BALANCE
+		set
+			BALANCE = #{balance}
+		where
+			ACCOUNT_NUMBER = #{account_Number}
 	</update>
 
 </mapper>

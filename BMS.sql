@@ -6,7 +6,7 @@ create sequence accountNumber
 	start 41238304200
 	increment 1
 	
-create sequence transcaction_Id
+create sequence transactionId
 	start 110000
 	increment 1
 
@@ -1165,11 +1165,19 @@ values ('9', 'Others');
 
 create table TRANSACTIONS
 (
-transaction_Id character(255) not null DEFAULT('T' || nextval('transaction_Id')) primary key,
-account_Number character(255) not null primary key,
+transaction_Id character(255) not null DEFAULT('T' || nextval('transactionId')),
+from_account_Number character(255) not null,
+to_account_Number character(255) not null,
+amount integer not null,
 transaction_Date Timestamp without time zone not null,
 description character(255),
 cr_dr character(25) not null,
-openining_Balance integer default 0,
-closing_Balance integer not null
-)
+primary key(transaction_Id, to_account_Number)
+);
+
+create table AVAILABLE_BALANCE
+(
+account_Number character(255) not null primary key,
+balance integer not null default 0
+);
+drop table transactions;

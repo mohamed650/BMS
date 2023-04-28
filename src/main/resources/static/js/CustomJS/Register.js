@@ -70,7 +70,7 @@ function onlyNumbers(event){
 	
 function onlyAlphabets(event){
 	var ascii = (event.which) ? event.which : event.keyCode;
-	if((ascii > 64 && ascii < 91) || (ascii > 96 && ascii < 123)){
+	if((ascii > 64 && ascii < 91) || (ascii > 96 && ascii < 123)  || ascii == 32){
 		return true;
 	}else{
 		return false;

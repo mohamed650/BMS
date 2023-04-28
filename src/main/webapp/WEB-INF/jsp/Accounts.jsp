@@ -12,29 +12,20 @@
 <link rel="stylesheet" href="/css/CustomCSS/Accounts.css" />
 <script src="/js/BuiltInJS/fontAwesome.js"></script>
 <script src="/js/BuiltInJS/jquery.js"></script>
-<title>SBI Home</title>
+<title><spring:message code="bms.label.accounts.accountsTitle"/></title>
 <jsp:include page="common/header.jsp"></jsp:include>
+<jsp:include page="common/sidenav.jsp"></jsp:include>
 </head>
 <body>
 <div class="accountscontainer">
-	<div class="sub-accountcontainer">
-		<div class="accounts-sidenav">
-			<div class="items-block">
-				<p class="items-name"><i class="fas fa-coins"></i>Check Balance</p>
-				<p class="items-name"><i class="fa fa-exchange"></i>Transfer Amount</p>
-				<p class="items-name"><i class="fa fa-history"></i>Transaction History</p>
-			</div>
+	<div class="user-details">
+		<div class="account-details">
+			<p><spring:message code="bms.label.accounts.accountNumber"/></p><span>${AccNumber}</span>
 		</div>
-		<div class="user-details">
-			<div class="account-details">
-				<p>A/C No: </p><span>${AccNumber}</span>
-			</div>
-			<div class="lastlogindetails">
-				<p>Last Login Date: </p><span>${LASTLOGIN}</span>
-			</div>
+		<div class="lastlogindetails">
+			<p><spring:message code="bms.label.accounts.lastLoginDate"/></p><span>${LASTLOGIN}</span>
 		</div>
 	</div>
-	
 </div>
 </body>
 </html>

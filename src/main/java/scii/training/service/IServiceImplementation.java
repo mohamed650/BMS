@@ -14,6 +14,7 @@ import scii.training.model.OccupationModel;
 import scii.training.model.RegisterModel;
 import scii.training.model.SBIAccountTypeModel;
 import scii.training.model.StateModel;
+import scii.training.model.TransactionsModel;
 
 @Component
 public class IServiceImplementation implements IService{
@@ -85,13 +86,22 @@ public class IServiceImplementation implements IService{
 					+"Password: "+password
 					+"\n"
 					+"\n"
-					+"Please Login to the Application using your Customer Id and Password.";
-			String subject = "SBI Credentials";
+					+"Please Login to the Application using your Customer Id and Password."
+					+"\n"
+					+"\n"
+					+"\n"
+					+"Please note: This is a System generated mail Please do not reply to this mail."
+					+"\n"
+					+"--Regards"
+					+"\n"
+					+"  State Bank of India(SBI)";
+			String subject = "SBI Account Created Successfully!";
 			
 			message.setFrom(sender);
 			message.setTo(recepient);
 			message.setSubject(subject);
 			message.setText(text);
+			
 			javaMailSender.send(message);
 			
 			return "SUCCESS";
@@ -111,6 +121,102 @@ public class IServiceImplementation implements IService{
 	public int updateLastLogin(RegisterModel userLastLogin) {
 		int updateStatus = imapper.updateLastLogin(userLastLogin);
 		return updateStatus;
+	}
+
+	@Override
+	public int insertBalance(TransactionsModel insertBalance) {
+		int insStatus = imapper.insertBalance(insertBalance);
+		return insStatus;
+	}
+
+	@Override
+	public List<TransactionsModel> fetchBalance(TransactionsModel fetchBal) {
+		List<TransactionsModel> fetchBalanceList = imapper.fetchBalance(fetchBal);
+		return fetchBalanceList;
+	}
+
+	@Override
+	public String sendTransOTP(String email, String otp) {
+		try {
+			SimpleMailMessage message = new SimpleMailMessage();
+			String recepient = email;
+			String text = "Hi, "+email+"\n"
+					+"\n"
+					+"Please find your OTP for the Transaction below,"+"\n"
+					+"\n"
+					+"OTP: "+otp+"\n"
+					+"\n"
+					+"\n"
+					+"\n"
+					+"Please note: This is a System generated mail Please do not reply to this mail."
+					+"\n"
+					+"--Regards"
+					+"\n"
+					+"  State Bank of India(SBI)";
+			String subject = "SBI OTP";
+			
+			message.setFrom(sender);
+			message.setTo(recepient);
+			message.setSubject(subject);
+			message.setText(text);
+			javaMailSender.send(message);
+			
+			return "SUCCESS";
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "FAILURE";
+		}
+	}
+
+	@Override
+	public int updateBalance(TransactionsModel updateBalance) {
+		int updateStatus = imapper.updateBalance(updateBalance);
+		return updateStatus;
+	}
+
+	@Override
+	public int transferAmount(TransactionsModel transferAmount) {
+		int transferStatus = imapper.transferAmount(transferAmount);
+		return transferStatus;
+	}
+
+	@Override
+	public String sendTransactionDetails(String customer_Name, String email, int amount, int balance) {
+		try {
+			SimpleMailMessage message = new SimpleMailMessage();
+			String recepient = email;
+			String text = "Dear, "+customer_Name+"\n"
+					+"\n"
+					+"Your Account has a credit of Rs."+amount
+					+"\n"
+					+"Avl Bal Rs."+balance+" -SBI"
+					+"\n"
+					+"\n"
+					+"\n"
+					+"Please note: This is a System generated mail Please do not reply to this mail."
+					+"\n"
+					+"--Regards"
+					+"\n"
+					+"  State Bank of India(SBI)";
+			String subject = "Amount Credited";
+			
+			message.setFrom(sender);
+			message.setTo(recepient);
+			message.setSubject(subject);
+			message.setText(text);
+			javaMailSender.send(message);
+			
+			return "SUCCESS";
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "FAILURE";
+		}
+	}
+
+	@Override
+	public List<RegisterModel> getBeneficiaryDetails(RegisterModel beneficiaryDetails) {
+		List<RegisterModel> beneficiaryList = imapper.getBeneficiaryDetails(beneficiaryDetails);
+		return beneficiaryList;
 	}
 
 }

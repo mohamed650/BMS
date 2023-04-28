@@ -56,7 +56,7 @@
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.phoneNumber" /></p>
 					<div class="phonediv">
 						<input type="text" id="countryCode" value="+91" style="width: 50px;" disabled/><span>-</span>
-						<input type="text" placeholder="Phone Number" id="customer_Phone" onkeypress="return onlyNumbers(event)"/>
+						<input type="text" maxlength=10 placeholder="Phone Number" id="customer_Phone" onkeypress="return onlyNumbers(event)"/>
 					</div>
 					<p class="sub-info"><spring:message code="bms.label.register.email"/></p>
 					<input type="text" placeholder="Email Id" id="customer_Email" style="margin-bottom: 15px; width: 300px;"/>

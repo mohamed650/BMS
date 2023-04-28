@@ -100,7 +100,7 @@ body{
 	background-color: #280071;
 }
 
-.sub-navcontainer a{
+.sub-navcontainer div a{
 	color: #fff;
 	text-decoration: none;
 }

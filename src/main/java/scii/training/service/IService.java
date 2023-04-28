@@ -7,6 +7,7 @@ import scii.training.model.OccupationModel;
 import scii.training.model.RegisterModel;
 import scii.training.model.SBIAccountTypeModel;
 import scii.training.model.StateModel;
+import scii.training.model.TransactionsModel;
 
 public interface IService {
 	
@@ -24,10 +25,24 @@ public interface IService {
 	
 	public int insertCustomerDetails(RegisterModel registerCustomer);
 	
+	public int insertBalance(TransactionsModel insertBalance);
+	
+	public List<TransactionsModel> fetchBalance(TransactionsModel fetchBal);
+	
 	String sendCustomerDetails(String email, String customerId, String accountNumber, String password);
 	
 	public List<RegisterModel> userLogin(RegisterModel checkUser);
 	
 	public int updateLastLogin(RegisterModel userLastLogin);
+	
+	String sendTransOTP(String email, String otp);
+
+	public int updateBalance(TransactionsModel updateBalance);
+
+	public int transferAmount(TransactionsModel transferAmount);
+
+	String sendTransactionDetails(String customer_Name, String email, int amount, int balance);
+
+	public List<RegisterModel> getBeneficiaryDetails(RegisterModel beneficiaryDetails);
 	
 }
