@@ -1,0 +1,195 @@
+.depositcontainer{
+    margin: 0;
+    padding: 0;
+}
+
+.sub-depositcontainer{
+    /*margin-left: 25%;
+    margin-right: 25%;*/
+    text-align: center;
+    margin-top: 15px;
+    display: block;
+}
+
+.depositcalculate{
+    margin-left: 10%;
+    margin-right: 10%;
+    display: inline-flex;
+}
+
+.depositcalculate:after,
+.depositcalculate:before{
+    margin-top: 0.5em;
+    content: "";
+    float: left;
+    border: 1.26em solid #fff;
+}
+.depositcalculate:after{
+    border-right-color: transparent;
+}
+.depositcalculate:before{
+    border-left-color: transparent;
+}
+.depositcalculate span:before{
+    content: "";
+    position: absolute;
+    top: 2.5em;
+    left: 0;
+    /*border-right: 0.5em solid #9B8651;*/
+    /*border-bottom: 0.5em solid #fff;*/
+}
+.depositcalculate span:after{
+    content: "";
+    position: absolute;
+    top: 2.5em;
+    right: 0;
+    /*border-left: 0.5em solid #9B8651;*/
+    /*border-bottom: 0.5em solid #fff;*/
+}
+.depositcalculate a{
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}
+.depositcalculate a:hover span{
+    background: #FFD204;
+    margin-top: 0;
+    color: blue;
+}
+.depositcalculate a:hover span:before{
+    border-right: 0.5em solid #9B8651;
+    border-bottom: 0.5em solid #fff;
+}
+.depositcalculate a:hover span:after{
+    border-left: 0.5em solid #9B8651;
+    border-bottom: 0.5em solid #fff;
+}
+.depositcalculate span{
+    background-color: #fff;
+    display: inline-block;
+    line-height: 2.6em;
+    padding: 0 0.5em;
+    margin-top: 0.5em;
+    position: relative;
+    transition: background-color 0.2s, margin-top 0.2s;
+}
+.depositcalculate #fd{
+    border-left: 1px solid #DCDCDC;
+    border-right: 1px solid #DCDCDC;
+    border-radius: 3px 3px 3px 3px;
+}
+.depositcalculator{
+    margin-top: 15px;
+}
+.depositcalculator div{
+    margin-left: 31%;
+}
+.depositcalculator h3{
+    margin-left: 31%;
+    color: #12a8e0;
+    margin-bottom: 25px;
+}
+.investAmount input[type="text"]{
+    outline: none;
+    width: 250px;
+}
+.depositcalculator p{
+    margin-bottom: 0;
+    font-size: 1.2em;
+}
+.investAmount input{
+    margin-top: 10px;
+}
+.deposit-seniordiv{
+    margin-top: 25px;
+}
+.deposit-seniordiv span{
+    margin-left: 5px;
+    margin-right: 25px;
+}
+.deposit-seniordiv input{
+    margin-top: 10px;
+}
+.tenurediv{
+    margin-top: 20px;
+}
+.tenurediv .datediv{
+    margin-left: 0;
+    display: inline-flex;
+    margin-top: 10px;
+}
+.tenurediv .datediv input{
+    outline: none;
+    width: 50px;
+}
+.tenurediv span{
+    display: grid;
+    margin-right: 20px;
+}
+.calculatebtn{
+    margin-top: 25px;
+}
+.calculatebtn input{
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    height: 40px;
+    width: 120px;
+    color: #fff;
+    background-color: #12a8e0;
+    margin-left: 4%;
+}
+.outputresultdiv{
+    margin-top: 30px;
+    border: none;
+    border-radius: 3px;
+    width: 400px;
+    margin-bottom: 15px;
+    color: #fff;
+    background: rgb(240,64,112);
+    background: linear-gradient(90deg, rgba(240,64,112,1) 0%, rgba(176,44,149,1) 30%, rgba(113,26,171,0.9976365546218487) 100%);
+}
+.outputresultdiv .sub-result{
+    display: inline-flex;
+    margin-left: 0;
+    width: 100%;
+}
+.outputresultdiv .sub-result div{
+    display: inline-flex;
+    margin-left: 0;
+}
+.outputresultdiv .sub-result div:nth-child(1){
+    float: left;
+    padding-left: 5px;
+}
+.outputresultdiv .sub-result div:nth-child(2){
+    margin-left: auto;
+    padding-right: 5px;
+}
+.outputresultdiv .sub-result div span{
+    font-size: 15px;
+}
+.outputresultdiv .sub-result div p{
+    font-size: 15px;
+}
+
+
+
+
+
+
+@media screen and (max-width: 749px){
+    .depositcalculate{
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .depositcalculate:after, .depositcalculate:before{
+        border: 0;
+    }
+    .depositcalculator h3{
+        margin-left: 5%;
+    }
+    .depositcalculator div{
+        margin-left: 5%;
+    }
+}

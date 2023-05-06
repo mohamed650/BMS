@@ -164,6 +164,17 @@
 		where
 			ACCOUNT_NUMBER = #{account_Number}
 	</select>
+
+	<select id="getCustomerTransactions" parameterType="scii.training.model.TransactionsModel" resultMap="transactionInfo">
+		select
+			*
+		from
+			TRANSACTIONS
+		where
+			FROM_ACCOUNT_NUMBER = #{from_account_Number}
+		or
+			TO_ACCOUNT_NUMBER = #{to_account_Number}
+	</select>
 	
 	<insert id="insertCustomerDetails" parameterType="scii.training.model.RegisterModel">
 		insert into

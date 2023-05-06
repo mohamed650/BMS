@@ -44,5 +44,7 @@ public interface IService {
 	String sendTransactionDetails(String customer_Name, String email, int amount, int balance);
 
 	public List<RegisterModel> getBeneficiaryDetails(RegisterModel beneficiaryDetails);
+
+	public List<TransactionsModel> getCustomerTransactions(TransactionsModel getCustomerTransactions);
 	
 }

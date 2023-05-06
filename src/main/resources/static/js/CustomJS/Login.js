@@ -71,11 +71,12 @@ function loginValidate(){
 			dataType: 'json',
 			success: function(response){
 				if(response.MESSAGE == "SUCCESS"){
-					alert("Login Suucessfull...");
+					alert("Login Successfull...");
 					window.location.href="/accounts";
 				}else{
 					alert("Invalid User!...");
 					window.location.href="/";
+					return false;
 				}
 			}
 		})

@@ -41,4 +41,6 @@ public interface IMapper {
 	public int transferAmount(TransactionsModel transferAmount);
 
 	public List<RegisterModel> getBeneficiaryDetails(RegisterModel beneficiaryDetails);
+
+	public List<TransactionsModel> getCustomerTransactions(TransactionsModel getCustomerTransactions);
 }

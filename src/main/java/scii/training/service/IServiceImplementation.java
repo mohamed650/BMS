@@ -219,4 +219,10 @@ public class IServiceImplementation implements IService{
 		return beneficiaryList;
 	}
 
+	@Override
+	public List<TransactionsModel> getCustomerTransactions(TransactionsModel getCustomerTransactions) {
+		List<TransactionsModel> getTransactionList = imapper.getCustomerTransactions(getCustomerTransactions);
+		return getTransactionList;
+	}
+
 }

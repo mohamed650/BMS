@@ -22,7 +22,7 @@
 		</div>
 		<div class="greetingsdiv">
 			<p class="greetings-title"><spring:message code="bms.label.header.greetings"/></p><span>${CustomerName}</span>
-			<i class="fa fa-sign-out fa-lg"></i>
+			<i class="fa fa-sign-out fa-lg" id="logout"></i>
 		</div>
 		<div class="hamburger-icon" onclick="makeResponsive()">
 			<i class="fa fa-bars fa-2x"></i>
@@ -67,5 +67,6 @@
 		</div>
 	</div>
 </div>
+<script src="/js/CustomJS/header.js"></script>
 </body>
 </html>

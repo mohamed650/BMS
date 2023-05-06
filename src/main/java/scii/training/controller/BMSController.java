@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -69,6 +70,7 @@ public class BMSController {
 				String customer_Name = checkLoginUser.get(0).getCustomer_FirstName().trim().concat(" ").concat(checkLoginUser.get(0).getCustomer_LastName().trim());
 				httpSession.setAttribute("CustomerName", customer_Name);
 				httpSession.setAttribute("AccountType", checkLoginUser.get(0).getCustomer_AccountType());
+				httpSession.setAttribute("CUSTID", checkLoginUser.get(0).getCustomer_Id());
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				Date currentDate = new Date();
 				loginUser.setLast_login_dateTime(dateFormat.format(currentDate));
@@ -112,6 +114,24 @@ public class BMSController {
 		modelAndView.addObject(httpSession.getAttribute("AccountType"));
 		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
 		modelAndView.addObject(httpSession.getAttribute("Balance"));
+		return modelAndView;
+	}
+
+	@GetMapping("/transactionHistory")
+	public ModelAndView transactionsHistoryScreen(HttpSession httpSession) throws Exception{
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("TransactionsHistory");
+		modelAndView.addObject(httpSession.getAttribute("AccNumber"));
+		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
+		modelAndView.addObject(httpSession.getAttribute("Balance"));
+		modelAndView.addObject(httpSession.getAttribute("CUSTID"));
+		return modelAndView;
+	}
+
+	@GetMapping("/investment-deposit")
+	public ModelAndView depositScreen(HttpSession httpSession) throws Exception{
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Deposit");
 		return modelAndView;
 	}
 	
@@ -431,99 +451,172 @@ public class BMSController {
 			String userOtp = transferAmount.getOtp();
 			transferAmount.setAccount_Number(from_account_Number);
 			List<TransactionsModel> balanceList = iservice.fetchBalance(transferAmount);
-			if(userOtp == null || userOtp == ""){
-				int amount = transferAmount.getAmount();
-				int balance = balanceList.get(0).getBalance();
-				if(amount > balance){
-					map.put("MESSAGE", "TRANSERROR");
-				}else{
-					transferAmount.setFrom_account_Number(from_account_Number);
-					transferAmount.setTransaction_Date(dateFormat.format(currentDate));
-					transferAmount.setCr_dr("dr");
-					balance = balance - amount;
-					transferAmount.setBalance(balance);
-					int transStatus = iservice.transferAmount(transferAmount);
-					if(transStatus == 1){
-						transferAmount.setAccount_Number(from_account_Number);
-						int fromUpdateStatus = iservice.updateBalance(transferAmount);
-						List<TransactionsModel> fetchBalanceList = iservice.fetchBalance(transferAmount);
-						String balanceAmt = String.valueOf(fetchBalanceList.get(0).getBalance());
-						httpSession.setAttribute("Balance", balanceAmt);
-						map.put("BALANCE", balanceAmt);
-						if(fromUpdateStatus == 1){
-							transferAmount.setAccount_Number(transferAmount.getTo_account_Number());
-							List<TransactionsModel> toBalanceList = iservice.fetchBalance(transferAmount);
-							int toBalance = toBalanceList.get(0).getBalance();
-							toBalance = toBalance + amount;
-							transferAmount.setBalance(toBalance);
-							int toUpdateStatus = iservice.updateBalance(transferAmount);
-							if(toUpdateStatus == 1){
-								RegisterModel beneficiaryDetails = new RegisterModel();
-								beneficiaryDetails.setAccount_Number(transferAmount.getTo_account_Number());
-								List<RegisterModel> beneficiaryList = iservice.getBeneficiaryDetails(beneficiaryDetails);
-								String customer_Name = beneficiaryList.get(0).getCustomer_FirstName().trim().concat(" ").concat(beneficiaryList.get(0).getCustomer_LastName().trim());
-								String email = beneficiaryList.get(0).getCustomer_Email();
-								String mailStatus = iservice.sendTransactionDetails(customer_Name, email, amount, toBalance);
-								System.out.println("Mail Status: "+ mailStatus);
-								map.put("MESSAGE", "SUCCESS");
+			RegisterModel beneficiaryDetails = new RegisterModel();
+			beneficiaryDetails.setAccount_Number(transferAmount.getTo_account_Number());
+			List<RegisterModel> check_to_accountNum = iservice.getBeneficiaryDetails(beneficiaryDetails);
+			if(check_to_accountNum.size() > 0){
+				if(userOtp == null || userOtp == ""){
+					int amount = transferAmount.getAmount();
+					int balance = balanceList.get(0).getBalance();
+					if(amount > balance){
+						map.put("MESSAGE", "TRANSERROR");
+					}else{
+						transferAmount.setFrom_account_Number(from_account_Number);
+						transferAmount.setTransaction_Date(dateFormat.format(currentDate));
+						transferAmount.setCr_dr("dr");
+						balance = balance - amount;
+						transferAmount.setBalance(balance);
+						int transStatus = iservice.transferAmount(transferAmount);
+						if(transStatus == 1){
+							transferAmount.setAccount_Number(from_account_Number);
+							int fromUpdateStatus = iservice.updateBalance(transferAmount);
+							List<TransactionsModel> fetchBalanceList = iservice.fetchBalance(transferAmount);
+							String balanceAmt = String.valueOf(fetchBalanceList.get(0).getBalance());
+							httpSession.setAttribute("Balance", balanceAmt);
+							map.put("BALANCE", balanceAmt);
+							if(fromUpdateStatus == 1){
+								transferAmount.setAccount_Number(transferAmount.getTo_account_Number());
+								List<TransactionsModel> toBalanceList = iservice.fetchBalance(transferAmount);
+								int toBalance = toBalanceList.get(0).getBalance();
+								toBalance = toBalance + amount;
+								transferAmount.setBalance(toBalance);
+								int toUpdateStatus = iservice.updateBalance(transferAmount);
+								if(toUpdateStatus == 1){
+									beneficiaryDetails.setAccount_Number(transferAmount.getTo_account_Number());
+									List<RegisterModel> beneficiaryList = iservice.getBeneficiaryDetails(beneficiaryDetails);
+									String customer_Name = beneficiaryList.get(0).getCustomer_FirstName().trim().concat(" ").concat(beneficiaryList.get(0).getCustomer_LastName().trim());
+									String email = beneficiaryList.get(0).getCustomer_Email();
+									String mailStatus = iservice.sendTransactionDetails(customer_Name, email, amount, toBalance);
+									System.out.println("Mail Status: "+ mailStatus);
+									map.put("MESSAGE", "SUCCESS");
+								}else{
+									map.put("MESSAGE", "FAILURE");
+								}
 							}else{
 								map.put("MESSAGE", "FAILURE");
 							}
 						}else{
 							map.put("MESSAGE", "FAILURE");
 						}
-					}else{
-						map.put("MESSAGE", "FAILURE");
 					}
-				}
-			}else if(userOtp.equals(genOtp)){
-				int amount = transferAmount.getAmount();
-				int balance = balanceList.get(0).getBalance();
-				if(amount > balance){
-					map.put("MESSAGE", "TRANSERROR");
-				}else{
-					transferAmount.setFrom_account_Number(from_account_Number);
-					transferAmount.setTransaction_Date(dateFormat.format(currentDate));
-					transferAmount.setCr_dr("dr");
-					balance = balance - amount;
-					transferAmount.setBalance(balance);
-					int transStatus = iservice.transferAmount(transferAmount);
-					if(transStatus == 1){
-						transferAmount.setAccount_Number(from_account_Number);
-						int fromUpdateStatus = iservice.updateBalance(transferAmount);
-						if(fromUpdateStatus == 1){
-							transferAmount.setAccount_Number(transferAmount.getTo_account_Number());
-							List<TransactionsModel> toBalanceList = iservice.fetchBalance(transferAmount);
-							int toBalance = toBalanceList.get(0).getBalance();
-							toBalance = toBalance + amount;
-							transferAmount.setBalance(toBalance);
-							int toUpdateStatus = iservice.updateBalance(transferAmount);
-							if(toUpdateStatus == 1){
-								RegisterModel beneficiaryDetails = new RegisterModel();
-								beneficiaryDetails.setAccount_Number(transferAmount.getTo_account_Number());
-								List<RegisterModel> beneficiaryList = iservice.getBeneficiaryDetails(beneficiaryDetails);
-								String customer_Name = beneficiaryList.get(0).getCustomer_FirstName().trim().concat(" ").concat(beneficiaryList.get(0).getCustomer_LastName().trim());
-								String email = beneficiaryList.get(0).getCustomer_Email();
-								String mailStatus = iservice.sendTransactionDetails(customer_Name, email, amount, toBalance);
-								System.out.println("Mail Status: "+ mailStatus);
-								map.put("MESSAGE", "SUCCESS");
+				}else if(userOtp.equals(genOtp)){
+					int amount = transferAmount.getAmount();
+					int balance = balanceList.get(0).getBalance();
+					if(amount > balance){
+						map.put("MESSAGE", "TRANSERROR");
+					}else{
+						transferAmount.setFrom_account_Number(from_account_Number);
+						transferAmount.setTransaction_Date(dateFormat.format(currentDate));
+						transferAmount.setCr_dr("dr");
+						balance = balance - amount;
+						transferAmount.setBalance(balance);
+						int transStatus = iservice.transferAmount(transferAmount);
+						if(transStatus == 1){
+							transferAmount.setAccount_Number(from_account_Number);
+							int fromUpdateStatus = iservice.updateBalance(transferAmount);
+							if(fromUpdateStatus == 1){
+								transferAmount.setAccount_Number(transferAmount.getTo_account_Number());
+								List<TransactionsModel> toBalanceList = iservice.fetchBalance(transferAmount);
+								int toBalance = toBalanceList.get(0).getBalance();
+								toBalance = toBalance + amount;
+								transferAmount.setBalance(toBalance);
+								int toUpdateStatus = iservice.updateBalance(transferAmount);
+								if(toUpdateStatus == 1){
+									beneficiaryDetails.setAccount_Number(transferAmount.getTo_account_Number());
+									List<RegisterModel> beneficiaryList = iservice.getBeneficiaryDetails(beneficiaryDetails);
+									String customer_Name = beneficiaryList.get(0).getCustomer_FirstName().trim().concat(" ").concat(beneficiaryList.get(0).getCustomer_LastName().trim());
+									String email = beneficiaryList.get(0).getCustomer_Email();
+									String mailStatus = iservice.sendTransactionDetails(customer_Name, email, amount, toBalance);
+									System.out.println("Mail Status: "+ mailStatus);
+									map.put("MESSAGE", "SUCCESS");
+								}else{
+									map.put("MESSAGE", "FAILURE");
+								}
 							}else{
 								map.put("MESSAGE", "FAILURE");
 							}
 						}else{
 							map.put("MESSAGE", "FAILURE");
 						}
-					}else{
-						map.put("MESSAGE", "FAILURE");
 					}
+				}else{
+					map.put("MESSAGE", "ERROROTP");
 				}
 			}else{
-				map.put("MESSAGE", "ERROROTP");
+				map.put("MESSAGE", "USERNOTEXIST");
+			}
+			
+			String json = gson.toJson(map);
+			response.getWriter().print(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@GetMapping("/loadTransactionsHistory")
+	public @ResponseBody Object loadTransactionsHistory(HttpSession httpSession){
+		try {
+			TransactionsModel transactionsHistory = new TransactionsModel();
+			String account_Number = (String) httpSession.getAttribute("AccNumber");
+			transactionsHistory.setFrom_account_Number(account_Number);
+			transactionsHistory.setTo_account_Number(account_Number);
+			List<TransactionsModel> transactionsList = iservice.getCustomerTransactions(transactionsHistory);
+			for(int i=0; i<transactionsList.size(); i++){
+				if(transactionsList.get(i).getTo_account_Number().trim().equals(account_Number)){
+					transactionsList.get(i).setCr_dr("cr");
+				}
+			}
+			return transactionsList;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@PostMapping("/showBalance")
+	public @ResponseBody void showBalance(HttpSession httpSession, HttpServletResponse response){
+		try {
+			TransactionsModel fetchBal = new TransactionsModel();
+			String accNumber = (String) httpSession.getAttribute("AccNumber");
+			fetchBal.setAccount_Number(accNumber);
+			List<TransactionsModel> fetchBalAmt = iservice.fetchBalance(fetchBal);
+			String responseAmount = null;
+			if(fetchBalAmt.size() > 0){
+				responseAmount = String.valueOf(fetchBalAmt.get(0).getBalance());
+			}
+			String json = gson.toJson(responseAmount);
+			response.getWriter().print(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@GetMapping("/checkSession")
+	public @ResponseBody void checkSession(HttpServletRequest request ,HttpServletResponse response){
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			HttpSession httpSession = request.getSession(false);
+			if(httpSession == null){
+				map.put("MESSAGE", "EXPIRED");
+			}else{
+				map.put("MESSAGE", "ALIVE");
 			}
 			String json = gson.toJson(map);
 			response.getWriter().print(json);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+
+	@GetMapping("/logout")
+	public @ResponseBody Object logout(HttpSession httpSession){
+		try {
+			ModelAndView modelAndView = new ModelAndView();
+			httpSession.invalidate();
+			modelAndView.setViewName("Login");
+			return modelAndView;
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 	}
 

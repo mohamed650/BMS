@@ -235,7 +235,10 @@ function transferAmount(){
 			data: params,
 			dataType: 'json',
 			success: function(response){
-				if(response.MESSAGE === "SUCCESS"){
+				if(response.MESSAGE === "USERNOTEXIST"){
+					alert("Invalid Account Number!...");
+					return false;
+				}else if(response.MESSAGE === "SUCCESS"){
 					alert("Amount Transferred Successfully...");
 					$("#to_account_Number").val("");
 					$("#amount").val("");
@@ -248,6 +251,6 @@ function transferAmount(){
 					return false;
 				}
 			}
-		})
+		});
 	}
 }
