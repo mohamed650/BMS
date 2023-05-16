@@ -152,6 +152,7 @@ public class BMSController {
 		modelAndView.addObject(httpSession.getAttribute("accnum"));
 		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
 		return modelAndView;
+
 	}
 	
 	@PostMapping("/getSbiAccountTypes")
