@@ -75,6 +75,8 @@
 					<p class="sub-info"><spring:message code="bms.label.register.occupation"/></p>
 					<select id="selectOccupation" style="margin-bottom: 15px;">
 					</select>
+					<p class="sub-info">Upload Image</p>
+					<input type="file" id="imgFile" enctype="multipart/form-data" accept=".png, .jpg, .jpeg">
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.password"/></p>
 					<input type="password" placeholder="Password" id="customer_Password" style="width: 200px; margin-bottom: 15px;"/>
 					<p class="sub-info" style="margin-top: 15px;"><spring:message code="bms.label.register.confirmPassword"/></p>

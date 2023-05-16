@@ -24,6 +24,7 @@ public class RegisterModel {
 	private String customer_Aadhar;
 	private String customer_OccupationId;
 	private String customer_Occupation;
+	private String imgFile;
 	private String customer_Password;
 	private String joint_customer_FirstName;
 	private String joint_customer_LastName;

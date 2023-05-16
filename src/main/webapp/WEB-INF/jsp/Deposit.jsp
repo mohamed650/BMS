@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +14,7 @@
 <link rel="stylesheet" href="/css/CustomCSS/deposit.css">
 <script src="/js/BuiltInJS/fontAwesome.js"></script>
 <script src="/js/BuiltInJS/jquery.js"></script>
-<title>Document</title>
+<title><spring:message code="bms.label.deposit.title"/></title>
 <jsp:include page="common/header.jsp"></jsp:include>
 </head>
 <body>
@@ -18,80 +22,83 @@
     <div class="sub-depositcontainer">
          <div class="depositcalculate">
             <a href="">
-                <span>Deposit Calculator</span>
+                <span><spring:message code="bms.label.deposit.depositCalculator"/></span>
             </a>
             <a href="">
-                <span id="fd">Fixed Deposit</span>
+                <span id="fd"><spring:message code="bms.label.deposit.fixedDeposit"/></span>
             </a>
             <a href="">
-                <span>Recurrring Deposit</span>
+                <span><spring:message code="bms.label.deposit.recurringDeposit"/></span>
             </a>
          </div> 
     </div>
-    <div class="depositcalculator">
-        <h3>Deposit Calculator</h3>
+    <div class="depositcalculator" id="depCalculator">
+        <h3><spring:message code="bms.label.deposit.depositCalculator"/></h3>
         <div class="investAmount">
-            <p>Invest Amount</p>
+            <p><spring:message code="bms.label.deposit.investAmount"/></p>
             <span><input type="text" id="investAmt" placeholder="&#8377 00" onkeypress="return onlyNumbers(event)"></span>
         </div>
         <div id="investmentErrors" style="display: none; color: red;">
-            <span id="not-senior">Enter an amount between 1000/- and 99,99,999/-</span>
-            <span id="senior">Enter an amount between 10000/- and 99,99,999/-</span>
+            <span id="not-senior"><spring:message code="bms.label.deposit.investmentnotsenior"/></span>
+            <span id="senior"><spring:message code="bms.label.deposit.investmentsenior"/></span>
         </div>
         <div class="deposit-seniordiv">
-            <p>Are You a senior citizen?</p>
-            <input type="radio" name="senior" value="Yes"><span>Yes</span>
-            <input type="radio" name="senior" value="No"><span>No</span>
+            <p><spring:message code="bms.label.deposit.seniorCitizen"/></p>
+            <input type="radio" name="senior" value="Yes"><span><spring:message code="bms.label.deposit.seniorYes"/></span>
+            <input type="radio" name="senior" value="No"><span><spring:message code="bms.label.deposit.seniorNo"/></span>
         </div>
         <div class="tenurediv">
-            <p>Tenure</p>
+            <p><spring:message code="bms.label.deposit.tenure"/></p>
             <div class="datediv">
-                <span><input type="text" name="" id="years" placeholder="00" onkeypress="return onlyNumbers(event)">Years</span>
-                <span><input type="text" name="" id="months" placeholder="00" onkeypress="return onlyNumbers(event)">Months</span>
-                <span><input type="text" name="" id="days" placeholder="00" onkeypress="return onlyNumbers(event)">Days</span>
+                <span><input type="text" name="" id="years" placeholder="00" onkeypress="return onlyNumbers(event)"><spring:message code="bms.label.deposit.tenureYears"/></span>
+                <span><input type="text" name="" id="months" placeholder="00" onkeypress="return onlyNumbers(event)"><spring:message code="bms.label.deposit.tenureMonths"/></span>
+                <span><input type="text" name="" id="days" placeholder="00" onkeypress="return onlyNumbers(event)"><spring:message code="bms.label.deposit.tenureDays"/></span>
             </div>
         </div>
         <div id="tenurewarnings" style="display: none; color: red;">
-            <span id="tenuremsg">Enter a duration between 7 days and 10 years.</span>
+            <span id="tenuremsg"><spring:message code="bms.label.deposit.tenureWarnings"/></span>
         </div>
         <div class="calculatebtn">
-            <input type="button" value="Calculate" onclick="calculateAmount()">
+            <input type="button" value="<spring:message code='bms.button.deposit.depositCalculator'/>" onclick="calculateAmount()">
         </div>
         <div class="outputresultdiv">
             <div class="sub-result">
                 <div>
-                    <p>Interest Amount</p>
+                    <p><spring:message code="bms.label.deposit.interestAmount"/></p>
                 </div>
                 <div>
-                    <span><span id="interestAmt">--</span>per annum</span>
-                </div>
-            </div>
-            <div class="sub-result">
-                <div>
-                    <p>Investment Amount</p>
-                </div>
-                <div>
-                    <span>&#8377<span id="investAmt">--</span></span>
+                    <span><span id="interestAmt"><spring:message code="bms.label.deposit.hyphen"/></span><spring:message code="bms.label.deposit.perAnnum"/></span>
                 </div>
             </div>
             <div class="sub-result">
                 <div>
-                    <p>Total Interest Amount</p>
+                    <p><spring:message code="bms.label.deposit.investmentAmount"/></p>
                 </div>
                 <div>
-                    <span>&#8377<span id="totalinterest">--</span></span>
+                    <span><spring:message code="bms.label.deposit.currencySymbol"/><span id="investAmount"><spring:message code="bms.label.deposit.hyphen"/></span></span>
+                </div>
+            </div>
+            <div class="sub-result">
+                <div>
+                    <p><spring:message code="bms.label.deposit.totalInterestAmount"/></p>
+                </div>
+                <div>
+                    <span><spring:message code="bms.label.deposit.currencySymbol"/><span id="totalinterest"><spring:message code="bms.label.deposit.hyphen"/></span></span>
                 </div>
             </div>
             <hr>
             <div class="sub-result">
                 <div>
-                    <p>Maturity Amount</p>
+                    <p><spring:message code="bms.label.deposit.maturityAmount"/></p>
                 </div>
                 <div>
-                    <span>&#8377<span id="maturityAmt">--</span></span>
+                    <span><spring:message code="bms.label.deposit.currencySymbol"/><span id="maturityAmt"><spring:message code="bms.label.deposit.hyphen"/></span></span>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="depositcalculator" style="display: none;">
+        <h3>Fixed Deposit</h3>
     </div>
 </div>
 <script src="/js/CustomJS/deposit.js"></script>

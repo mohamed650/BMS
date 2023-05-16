@@ -21,14 +21,18 @@
 			<p class="bank-title"><spring:message code="bms.label.header.bankTitle"/></p>
 		</div>
 		<div class="greetingsdiv">
-			<p class="greetings-title"><spring:message code="bms.label.header.greetings"/></p><span>${CustomerName}</span>
+			<p class="greetings-title"><spring:message code="bms.label.header.greetings"/></p><span id="custName">${CustomerName}</span>
+			<div class="profileView">
+				<img src=${UserImage} width="45px" height="45px" alt="">
+				<a href="#">View Profile</a>
+				<a href="">Change Password</a>
+				<hr>
+				<a href="" id="signout">Sign Out</a>
+			</div>
 			<i class="fa fa-sign-out fa-lg" id="logout"></i>
 		</div>
-		<div class="hamburger-icon" onclick="makeResponsive()">
-			<i class="fa fa-bars fa-2x"></i>
-		</div>
 	</div>
-	<div class="sub-navcontainer">
+	<div class="sub-navcontainer" id="my-subcontainer">
 		<div id="accounts">
 			<a href="/accounts">
 				<img src="/images/sbi-accounts.png"/>
@@ -64,6 +68,10 @@
 				<img src="images/information_services.png"/>
 				<span><spring:message code="bms.label.header.information-services"/></span>
 			</a>
+		</div>
+		<div id="hamburger-icon" onclick="makeResponsive()">
+			<i class="fa fa-bars fa-2x" id="fa-bar"></i>
+			<i class="fa fa-solid fa-xmark fa-2x" id="fa-xmark" style="display: none;"></i>
 		</div>
 	</div>
 </div>

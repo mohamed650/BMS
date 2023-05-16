@@ -291,6 +291,7 @@ function registerCustomer(){
 	const notAllowedSpecials = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 	const regex_pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 	const phoneValid = /^[6-9]\d{9}$/;
+	var fullpath = $("#imgFile").val();
 	let accountType = $("#customer_AccountType").val();
 	let customerTitle = $("#selectTitle").val();
 	let customerSelectedTitle = $("#selectTitle :selected").text();
@@ -332,6 +333,8 @@ function registerCustomer(){
 		customer_Aadhar: $("#customer_Aadhar").val(),
 		customer_OccupationId: customerOccupation,
 		customer_Occupation: $("#selectOccupation :selected").text(),
+		imgFile : fullpath.replace(/^.*[\\\/]/, ''),
+		imgLocation: fullpath,
 		customer_Password: $("#customer_Password").val(),
 		joint_customer_FirstName: customerSelectedJointTitle.concat($("#joint_customer_FirstName").val()),
 		joint_customer_LastName: $("#joint_customer_LastName").val(),
@@ -418,6 +421,9 @@ function registerCustomer(){
 		return false;
 	}else if(customerOccupation == -1){
 		alert("Please select Occupation!..");
+		return false;
+	}else if(params.imgFile == "" || params.imgFile == null){
+		alert("Please choose image!...");
 		return false;
 	}else if(params.customer_Password == ""){
 		alert("Password cannot be empty!..");

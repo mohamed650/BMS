@@ -40,6 +40,7 @@
 		<result property="customer_Aadhar" column="customer_Aadhar"/>
 		<result property="customer_OccupationId" column="customer_OccupationId"/>
 		<result property="customer_Occupation" column="customer_Occupation"/>
+		<result property="imgFile" column="imgFile"/>
 		<result property="customer_Password" column="customer_Password"/>
 		<result property="joint_customer_FirstName" column="joint_customer_FirstName"/>
 		<result property="joint_customer_LastName" column="joint_customer_LastName"/>
@@ -196,6 +197,7 @@
 				CUSTOMER_AADHAR,
 				CUSTOMER_OCCUPATIONID,
 				CUSTOMER_OCCUPATION,
+				IMGFILE,
 				CUSTOMER_PASSWORD,
 				JOINT_CUSTOMER_FIRSTNAME,
 				JOINT_CUSTOMER_LASTNAME,
@@ -232,6 +234,7 @@
 			#{customer_Aadhar},
 			#{customer_OccupationId},
 			#{customer_Occupation},
+			#{imgFile},
 			#{customer_Password},
 			#{joint_customer_FirstName},
 			#{joint_customer_LastName},

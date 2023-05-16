@@ -1142,6 +1142,8 @@ deactivated_Date Date
 );
 drop table SBIUSERS;
 
+alter table SBIUSERS add imgFile character(255);
+
 create table customer_Occupation
 (
 customer_OccupationId character(10) not null primary key,

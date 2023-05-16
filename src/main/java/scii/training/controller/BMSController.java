@@ -2,6 +2,8 @@ package scii.training.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -71,6 +75,7 @@ public class BMSController {
 				httpSession.setAttribute("CustomerName", customer_Name);
 				httpSession.setAttribute("AccountType", checkLoginUser.get(0).getCustomer_AccountType());
 				httpSession.setAttribute("CUSTID", checkLoginUser.get(0).getCustomer_Id());
+				httpSession.setAttribute("UserImage", checkLoginUser.get(0).getImgFile());
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				Date currentDate = new Date();
 				loginUser.setLast_login_dateTime(dateFormat.format(currentDate));
@@ -103,6 +108,7 @@ public class BMSController {
 		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
 		modelAndView.addObject(httpSession.getAttribute("LASTLOGIN"));
 		modelAndView.addObject(httpSession.getAttribute("AccNumber"));
+		modelAndView.addObject(httpSession.getAttribute("UserImage"));
 		return modelAndView;
 	}
 	
@@ -132,6 +138,19 @@ public class BMSController {
 	public ModelAndView depositScreen(HttpSession httpSession) throws Exception{
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("Deposit");
+		return modelAndView;
+	}
+
+	@GetMapping("/cards")
+	public ModelAndView cardsScreen(HttpSession httpSession) throws Exception{
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Cards");
+		String accnum = (String) httpSession.getAttribute("AccNumber");
+		accnum = accnum.replace(accnum.substring(4, 10), "******");
+		System.out.println(accnum);
+		httpSession.setAttribute("accnum", accnum);
+		modelAndView.addObject(httpSession.getAttribute("accnum"));
+		modelAndView.addObject(httpSession.getAttribute("CustomerName"));
 		return modelAndView;
 	}
 	
@@ -274,6 +293,7 @@ public class BMSController {
 		}
 	}
 	
+	
 	@PostMapping("/registerCustomer")
 	public @ResponseBody void registerCustomer(@ModelAttribute ("registerCustomer") RegisterModel registerCustomer, HttpServletResponse response) {
 		try {
@@ -282,6 +302,7 @@ public class BMSController {
 			if(checkExistingCustomer.size() > 0) {
 				map.put("MESSAGE", "CUSTOMER EXIST");
 			}else {
+				registerCustomer.setImgFile("/images/"+registerCustomer.getImgFile());
 				int status = iservice.insertCustomerDetails(registerCustomer);
 				List<RegisterModel> fetchCustomerList = iservice.checkRegisteredCustomer(registerCustomer);
 				String email = fetchCustomerList.get(0).getCustomer_Email();
@@ -617,6 +638,18 @@ public class BMSController {
 			return modelAndView;
 		} catch (Exception e) {
 			return e.getMessage();
+		}
+	}
+
+	@PostMapping("/getDifferenceDates")
+	public @ResponseBody void getDifferenceDates(@RequestParam ("years") int years, @RequestParam ("months") int months, @RequestParam ("days") int days, HttpServletResponse response){
+		try {
+			LocalDate startDate = LocalDate.now();
+			LocalDate endDate = startDate.plusYears(years).plusMonths(months).plusDays(days);
+			int timeInDays = (int) ChronoUnit.DAYS.between(startDate, endDate);
+			response.getWriter().print(timeInDays);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

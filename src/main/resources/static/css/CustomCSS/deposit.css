@@ -166,8 +166,15 @@
     margin-left: auto;
     padding-right: 5px;
 }
+.outputresultdiv .sub-result div p{
+    font-size: 16px;
+}
 .outputresultdiv .sub-result div span{
     font-size: 15px;
+    margin-left: 5px;
+}
+#interestAmt{
+    margin-right: 5px;
 }
 .outputresultdiv .sub-result div p{
     font-size: 15px;
